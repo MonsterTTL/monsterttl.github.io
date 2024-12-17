@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <header>
+        <meta charset="utf-8"/>
+        <link rel="stylesheet" href="../styles/guess.css"/>
+    </header>
+    <body>
+        <title>猜数游戏</title>
+        <div id="guessNumberHeaderBox">
+            <img src="../images/pokemon-icon.png" alt="封面图"/>
+        </div>
+        <p style="text-align: center">将生成一个0-100范围内的随机数，请猜测：</p>
+        <div style="text-align: center">
+            <label for="guessField">输入你的猜测</label>
+            <input type="number" id="guessField" class="guessField"/>
+            <input type="submit" value="Submit Guess" class="submitGuess"/>
+        </div>
+        <div id="tipsBox" class="resultPara" >
+            <p class="guesses"></p>
+            <p class="lastRes"></p>
+            <p class="largeOrSmall"></p>
+        </div>
+        <script src="../scripts/guessNumber.js"></script>
+    </body>
+</html>

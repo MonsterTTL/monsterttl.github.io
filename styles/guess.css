@@ -1,0 +1,15 @@
+#guessNumberHeaderBox {
+    width: 100%;
+    height: auto;
+    text-align: center;
+}
+
+html {
+    font-size: 18px;
+    font-family: "Open Sans", sans-serif;
+}
+#tipsBox {
+    width: 60%;
+    text-align: center;
+}
+
