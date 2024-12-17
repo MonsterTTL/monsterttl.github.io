@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+    <title>我的文档</title>
     <meta charset="UTF-8">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans"
           rel="stylesheet" />
     <link rel="stylesheet" href="../styles/docs.css" />
-    <title>我的文档</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
     <div class="doc_heading">
@@ -15,12 +16,26 @@
         <h2>标题目录：</h2>
         <ul id="custom_libs">
             <li>
-                <a class="doc-item" href="../markdowns/Custom_Lib/RxJava入门.md">RxJava入门</a>
+                <a class="doc-item" style="color: blue" onclick="loadMarkdown()">RxJava入门</a>
             </li>
         </ul>
         <ul id="web">
 
         </ul>
     </div>
+    <div id="markdown-container"></div>
+    <script>
+        function loadMarkdown() {
+            fetch('../markdowns/Custom_Lib/RxJava入门.md')
+                .then(response => response.text())
+                .then(text => {
+                    document.getElementById('markdown-container').innerHTML = marked();
+                })
+                .catch(error => {
+                    console.error('加载 Markdown 失败:', error);
+                    window.open("../markdowns/Custom_Lib/RxJava入门.md")
+                });
+        }
+    </script>
 </body>
 </html>
