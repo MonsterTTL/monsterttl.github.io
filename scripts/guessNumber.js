@@ -1,4 +1,4 @@
-import { displayMessageBox } from "./main.js";
+import {displayMsgBox} from "./dialogUtils";
 function guessNumber_JsMain() {
     //生成最终的答案
     let randomNumber = Math.floor(Math.random() * 100) + 1;
@@ -26,13 +26,13 @@ function guessNumber_JsMain() {
             lastResult.style.backgroundColor = "green";
             lowOrHi.textContent = "";
             setGameOver();
-            displayMessageBox(lastResult.textContent);
+            displayMsgBox(lastResult.textContent);
         } else {
             if (guessCount >= 10) {
                 lastResult.textContent = "游戏结束！！";
                 lowOrHi.textContent = "";
                 setGameOver();
-                displayMessageBox(lastResult.textContent);
+                displayMsgBox(lastResult.textContent);
                 return;
             }
             lastResult.textContent = "错误!";
@@ -78,6 +78,8 @@ function guessNumber_JsMain() {
 
         randomNumber = Math.floor(Math.random() * 100) + 1;
     }
+
+
 //添加案件监听，每次按下都触发检测
     guessSubmit.addEventListener("click",checkGuess);
 }

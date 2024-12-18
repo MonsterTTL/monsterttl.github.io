@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <title>视频播放</title>
+    <style>
+      .tile {
+        height: 100px;
+        width: 25%;
+        float: left;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="video_play">显示视频</button>
+    <div class="hidden" style="color: gray">
+      <video style="margin: 50px">
+        <source
+          src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm"
+          type="video/webm"
+        />
+        <p>
+          您的浏览器不支持 video 标签。
+          <a href="rabbit320.mp4">
+            替代链接
+          </a>
+        </p>
+      </video>
+    </div>
+    <div id="container">
+      <div class="tile"></div>
+      <div class="tile"></div>
+      <div class="tile"></div>
+      <div class="tile"></div>
+      <div class="tile"></div>
+      <div class="tile"></div>
+      <div class="tile"></div>
+      <div class="tile"></div>
+      <div class="tile"></div>
+      <div class="tile"></div>
+      <div class="tile"></div>
+      <div class="tile"></div>
+      <div class="tile"></div>
+      <div class="tile"></div>
+      <div class="tile"></div>
+      <div class="tile"></div>
+    </div>
+    <script src="../scripts/showVideo.js"></script>
+  </body>
+</html>
