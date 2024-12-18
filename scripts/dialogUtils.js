@@ -1,4 +1,4 @@
-export const DIALOG_UTILS_INSTANCE = {
+const DIALOG_UTILS_INSTANCE = {
     displayMsgBox : function displayMsgBox(msgContent) {
         // 选择 HTML 元素作为消息框的父元素
         const html = document.querySelector("html");
