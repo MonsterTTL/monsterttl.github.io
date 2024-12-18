@@ -1,3 +1,6 @@
+html {
+    background: azure;
+}
 h1 {
     text-align: center;
     width: 100%;
@@ -6,14 +9,17 @@ h1 {
     font-family: "Open Sans", sans-serif;
     color: cadetblue;
     background: aliceblue;
+    border-radius: 6px;
 }
-.doc_catalog {
+div.doc_catalog {
+    padding-left: 1%;
+    padding-top: 1%;
+    padding-bottom: 1%;
     width: 20%;
     height: 100%;
     background: lightblue;
+    border-radius: 4px;
 }
-
-
 a.doc-item {
     text-align: center;
     font-size: 24px;
