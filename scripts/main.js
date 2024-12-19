@@ -39,6 +39,8 @@ function main_js() {
         updateHeadingContent(browserName, storedName);
     })
     updateHeadingContent(getBrowserName(), setUserName());
+
+
 }
 main_js();
 

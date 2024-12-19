@@ -80,6 +80,35 @@ let hello = function(name) {
     console.log("how are you, ${name}?");
 }
 ```
+不过这两者也有区别，箭头函数中this指向是固定的，而匿名函数中this指向是变化的，箭头函数不会创建自己的this，它只会从自己的作用域链
+中继承this。而匿名函数中this指向的是调用该函数时的对象。比如说：
+```javascript
+this.name = "顶级上下文";
+
+const DiffProto = {
+    archorFun:  () => {
+        console.log(this.name);
+
+    },
+    namelessFun:  function() {
+        console.log(this.name);
+    },
+}
+
+obj = {
+    name: "obj",
+}
+
+Object.setPrototypeOf(obj, DiffProto);
+obj.archorFun();
+obj.namelessFun();
+```
+执行后的结果是:
+```javascript
+顶级上下文
+obj
+```
+可以发现箭头函数的this在定义时就已经确定，而匿名函数的this是在调用时确定的。
 ## 函数参数
 JavaScript中的函数参数跟其他语言中的函数参数基本一致，但是JavaScript中函数参数可以设置默认值，函数参数也可以是剩余参数。
 ```javascript
@@ -113,3 +142,242 @@ hello();
 这种消息传递机制也叫事件冒泡。另外一种事件传递机制叫事件捕获。事件捕获是从外向内传递的事件传递机制。这个
 机制就跟Android中点击事件的传递机制相类似了，同样的也可以阻止事件的传递，我们可以调用`stopPropagation()`
 方法来阻止事件的传递。
+
+# 对象
+一开始提到过JavaScript中有一种容器类型叫Object，Object类型就是JavaScript中的对象类型。对象类型是JavaScript中
+最复杂的一种类型，它包含了属性、方法和构造函数等。我把这种类型理解为增强型的Map类型(当然这两者显然不同)，我们实际上也可以这么用。      
+有的时候我们可以把它作为Kotlin中的一个object单例来用，可以在里面封装一些数据和方法，比如说,Kotlin中的单例可以这么用：
+```kotlin
+object banana {
+    val name = "香蕉"
+    val price = 5
+    fun introduce() {
+        println("名称:${name},价格:${price}元")
+    }
+    fun growUp() {
+        println("香蕉长高")
+    }
+    fun eat() {
+        println("吃香蕉")
+    }
+}
+banana.introduce()
+banana.growUp()
+banana.eat()
+```
+在JavaScript中我们可以这么用：
+```javascript
+const banana = {
+    name: '香蕉',
+    price: 5 ,
+    introduce: function () {
+        console.log(`名称:${this.name},价格:${(this.price)}元`);
+    },
+    growUp: ()  => {
+        console.log('香蕉长高')
+    },
+    eat() {
+        console.log('吃香蕉')
+    }
+}
+
+banana.introduce();
+banana.growUp();
+banana.eat();
+```
+## 访问对象和拓展对象
+访问对象的属性一般有两种方式，一种是点语法，一种是方括号语法。对我而言，点语法更符合我们平时的使用习惯。例如上面的例子，如果我们
+想用方括号语法的话就要这么写:
+```javascript
+banana["introduce"]()
+banana["growUp"]()
+banana["eat"]()
+```
+在这里我们也可以看出来，对于JS对象来说，其属性名都是字符串类型。更加神奇的是，我们还可以给对象动态添加属性和方法，类似于Kotlin中的扩展函数。
+这里也体现的脚本语言的特点，就是动态性。
+
+## 构造函数
+JavaScript中对象也可以有构造函数，构造函数就是用来创建对象的函数，类似于别的语言中类的构造函数。   
+我们要做的就是创建一个函数，然后在这个函数中定义一些属性，然后返回这个对象。或者，我们可以使用new关键字来创建对象。  
+这和我们在别的语言里创建对象是一样的。 比如：
+```javascript
+function Banana(price) {
+    this.name = '香蕉',
+    this.price = price ,
+    this.introduce = function () {
+        console.log(`名称:${this.name},价格:${(this.price)}元`);
+    },
+    this.growUp = ()  => {
+        console.log('香蕉长高')
+    }
+}
+const b = new Banana(10);
+b.introduce();
+b.growUp();
+```
+需要注意的是我们需要用this关键字来绑定属性，否则这些属性将会成为全局变量。
+
+# 对象原型
+这点类似于Java中的类继承。JavaScript中对象也有原型，原型就是对象的模板。我们访问对象中的属性时，
+如果对象中没有这个属性，那么它将会去原型中查找这个属性，如果原型中也没有这个属性，那么它将会继续去原型的原型中查找这个属性，
+直到找到这个属性或者找不到这个属性为止。这叫做对象的原型链。   
+
+这个原型链实际上非常像其他语言中的类继承，我们在其他语言上的一些直觉性概念在JavaScript中也会存在，比如面向对象
+的封装、继承、多态等。
+
+## 设置原型
+一般来说我们会通过构造函数，所有函数都有prototype属性，这个属性就是函数的原型，当我们把一个函数作为构造函数使用时，这个函数
+的prototype属性将会成为这个构造函数的原型，这样构建出来的对象将会拥有这个原型上的属性和方法。比如说：
+```javascript
+function Banana(price) {
+    this.name = '香蕉',
+        this.price = price ,
+        this.introduce = function () {
+            console.log(`名称:${this.name},价格:${(this.price)}元`);
+        },
+        this.growUp = ()  => {
+            console.log('香蕉长高')
+        }
+}
+
+const b = new Banana(10);
+b.introduce();
+b.growUp();
+
+const fruitPrototype = {
+    sayhello () {
+        console.log(`hello,${this.name}`);
+    }
+}
+
+Object.assign(Banana.prototype,fruitPrototype);
+console.log(Object.getPrototypeOf(b));
+
+b.sayhello();
+```
+我们通过assign方法把fruitPrototype对象上的属性和方法赋值给Banana的prototype对象上， 这样b对象就可以访问到fruitPrototype对象
+上的属性和方法了。我们经常看到这种模式，即方法是在原型上定义的，但数据属性是在构造函数中定义的。这是因为方法通常对我们创建的每个对象都是一样的，
+而我们通常希望每个对象的数据属性都有自己的值（就像这里每个人都有不同的名字）。 
+
+比如我们可以为两个对象的构造函数指定同一个原型，这样能实现一个类似于继承或者是实现接口的功能:
+```javascript
+function Banana(price) {
+    this.name = '香蕉',
+    this.price = price
+}
+
+function Apple(price) {
+    this.name = '苹果',
+    this.price = price
+}
+
+const fruitPrototype = {
+    sayhello () {
+        console.log(`hello,${this.name}`);
+    },
+    introduce: function () {
+        console.log(`名称:${this.name},价格:${(this.price)}元`);
+    },
+    growUp: function () {
+        console.log(`${this.name}长高`)
+    }
+}
+
+Object.assign(Banana.prototype,fruitPrototype);
+Object.assign(Apple.prototype,fruitPrototype);
+
+const a = new Apple(5);
+const b = new Banana(10);
+
+a.introduce();
+a.growUp();
+b.introduce();
+b.growUp();
+
+```
+# 面向对象
+
+## 类的定义
+Js中类的定义类似于Java：
+```javascript
+class Fruit {
+    name = "";
+
+    constructor(name) {
+        this.name = name;
+    }
+
+    info() {
+        console.log(`this fruit is:${this.name}`);
+    }
+}
+```
+简而言之用class关键字定义一个类，然后定义一个构造函数（可选），构造函数中定义一些属性，然后定义一些方法。在底层，引擎还是通过原型链的方式
+来实现的，只不过这种构建类的方法更方便快捷。
+
+## 类的继承
+类的继承使用extend关键字，总而言之跟Java中的也差不多,我们可以为子类添加一些属性和方法，然后调用父类的构造函数，也可以
+覆盖父类的方法，以此达到多态的效果。
+
+```javascript
+class Fruit {
+    name = "";
+    color = "";
+
+    constructor(name=this.name) {
+        this.name = name;
+        console.log("Fruit constructor");
+    }
+
+    info() {
+        console.log(`this fruit is:${this.name}`);
+    }
+}
+
+class Apple extends Fruit {
+    name = "apple";
+    color = "red";
+
+    constructor() {
+        super();
+        console.log("Apple constructor");
+    }
+
+
+    info() {
+        console.log(`this fruit is:${this.name}, color is ${this.color}`);
+    }
+}
+
+const apple = new Apple();
+apple.info();
+```
+
+## 封装
+所谓封装就是隐藏对象的属性和方法，只暴露一些公共的方法给外部使用。在默认情况下，JavaScript中所有的属性和方法都是公开的，
+我们可以直接访问和修改这些属性和方法，如果要声明私有数据就要带上#符号。
+
+```javascript
+class Apple extends Fruit {
+    name = "apple";
+    color = "red";
+
+    #apple_secret = "apple secret";
+
+    constructor() {
+        super();
+        console.log("Apple constructor");
+    }
+
+
+    info() {
+        //super.info();
+        console.log(`this fruit is:${this.name}, color is ${this.color}`);
+    }
+}
+```
+这里我们就给Apple类添加了一个私有属性#apple_secret,这个属性只能在Apple类中使用，不能在外部使用。如果我们直接访问就会报错:
+```
+SyntaxError: Private field '#apple_secret' must be declared in an enclosing class
+```
+声明私有方法也是一样的，我们只需要在方法名前面加上#符号即可。
