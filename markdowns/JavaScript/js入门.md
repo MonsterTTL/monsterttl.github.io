@@ -381,3 +381,85 @@ class Apple extends Fruit {
 SyntaxError: Private field '#apple_secret' must be declared in an enclosing class
 ```
 声明私有方法也是一样的，我们只需要在方法名前面加上#符号即可。
+
+# 异步编程
+
+## Promise
+所谓Promise就是一个对象，这个对象代表了一个异步操作的结果。Promise对象有两个方法：then和catch，then方法用于处理异步操作成功后的结果，
+catch方法用于处理异步操作失败后的结果。一个Promise对象有三种状态，分别是：
+* pending：正在进行中
+* fulfilled：请求成功，之后便后执行then方法
+* rejected：请求失败，之后便执行catch方法
+
+通过fetchAPI，我们就可以得到一个Promise对象，这个对象代表了一个异步操作的结果：
+```javascript
+fetch('https://api.example.com/data')
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.error(error));
+```
+除此之外，如果我们要执行的异步操作本身没有什么依赖关系，我们可以用Promise.add()方法同时启动多个异步操作，他将返回一个Promise对象，这个对象
+代表所有异步操作的结果，比如说:
+```javascript
+const promise1 = fetch('https://api.example.com/data1');
+const promise2 = fetch('https://api.example.com/data2');
+const promise3 = fetch('https://api.example.com/data3');
+
+Promise.all([promise1, promise2, promise3])
+    .then(results => {
+        console.log(results);
+    })
+    .catch(error => {
+        console.error(error);
+    });
+```
+同理，还有Promise.Any()方法，只要有一个异步操作成功即可;Promise.race()方法，返回第一个完成的结果。
+
+## async/await
+顾名思义，使用async/await关键字可以让我们使用同步的方式编写异步代码。当我们给一个方法加上async关键字时，这个方法将会返回一个Promise对象，
+这个Promise对象的状态取决于这个方法内部的异步操作的结果，我们就可以使用then方法处理这个Promise对象的结果了。而await关键字则用于等待一个Promise对象
+的状态改变，简而言之就是把一个异步操作封装成一个同步操作。
+
+
+
+## Promise构造器
+我们还可以构造一个Promise对象，这个对象的状态取决于我们传入的函数的结果。一个Promise的构造方法接受一个函数作为参数，这个函数有两个参数，
+resolve和reject，分别用于表示Promise对象的状态改变为成功和失败。比如：
+```javascript
+const promise = new Promise((resolve,reject) => {
+    if (true) {
+        resolve('success');
+    } else {
+        reject('fail');
+    }
+})
+```
+需要说明的是，除了reject，我们还可以抛出异常，异常将会被catch捕获，但这两者有一点细微的区别，那就是抛出异常代码会立即停止执行，后面
+的代码将不会被执行，而reject则不会：
+```javascript
+async function asyAlert(message, delay) {
+    return new Promise((resolve, reject) => {
+        if (delay < 0) {
+            throw (new Error('Delay must be non-negative'));
+        }
+        console.log('continue invoke');
+        setTimeout(() => {
+            resolve(message);
+        }, delay);
+    })
+}
+
+function test() {
+    asyAlert('1', -1).then(res => {
+        console.log(res);
+    }).catch(err => {
+        console.log(err);
+    })
+
+
+}
+test();
+```
+比如在这里，我们在Promise对象内部抛出了一个异常，那么后面的console将不会被打印出来，而如果我们在Promise对象内部reject了一个异常，那么
+后面的console将会被打印出来。
+
