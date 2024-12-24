@@ -1,0 +1,15 @@
+h1 {
+    text-align: center;
+    font-size: 40px;
+    background: aliceblue;
+    color: lightblue;
+    border: 4px solid bisque;
+    border-radius: 10px;
+}
+p {
+    color: blue;
+}
+
+p[title] {
+    color: red;
+}
