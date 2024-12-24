@@ -7,3 +7,5 @@
 * TypedScript
 * React
 * React Native
+
+个人的文档/知识库在 "./markdowns/" 目录下。
