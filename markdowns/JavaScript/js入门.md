@@ -398,7 +398,7 @@ fetch('https://api.example.com/data')
     .then(data => console.log(data))
     .catch(error => console.error(error));
 ```
-除此之外，如果我们要执行的异步操作本身没有什么依赖关系，我们可以用Promise.add()方法同时启动多个异步操作，他将返回一个Promise对象，这个对象
+除此之外，如果我们要执行的异步操作本身没有什么依赖关系，我们可以用Promise.all()方法同时启动多个异步操作，他将返回一个Promise对象，这个对象
 代表所有异步操作的结果，比如说:
 ```javascript
 const promise1 = fetch('https://api.example.com/data1');
@@ -420,6 +420,7 @@ Promise.all([promise1, promise2, promise3])
 这个Promise对象的状态取决于这个方法内部的异步操作的结果，我们就可以使用then方法处理这个Promise对象的结果了。而await关键字则用于等待一个Promise对象
 的状态改变，简而言之就是把一个异步操作封装成一个同步操作。
 
+详情可以看ES6中的内容
 
 
 ## Promise构造器
